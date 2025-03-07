@@ -58,12 +58,7 @@ app.get("/screenshot", async (req, res) => {
       // deviceScaleFactor: 2,
     })
     await page.goto(targetUrl) // 访问目标页面
-    await page.waitForSelector('textarea[name="q"]')
-    await page.type('textarea[name="q"]', "新闻")
-    await page.keyboard.press("Enter")
-    await page.waitForSelector("#search")
 
-    const screenshot = await page.screenshot()
     // 截取全屏截图
     await page.screenshot({
       type: "jpeg",
