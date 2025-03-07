@@ -23,7 +23,6 @@ app.post('/p', (req, res) => {
 app.post('/screenshot', async (req, res) => {
   try {
     const browser = await puppeteer.launch({
-      executablePath: "/usr/bin/chromium-browser", // 指定 Chromium 路径
       args: ['--no-sandbox', '--disable-setuid-sandbox'],
       ignoreHTTPSErrors: true  // 忽略 HTTPS 错误
 
