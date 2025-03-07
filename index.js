@@ -29,7 +29,7 @@ app.get("/screenshot", async (req, res) => {
         "--disable-notifications",
         `--unsafely-treat-insecure-origin-as-secure=${targetUrl}`,
       ],
-      headless: false, // 使用新的 Headless 模式
+      headless: true, // 使用新的 Headless 模式
       ignoreHTTPSErrors: true, // 忽略 HTTPS 错误
     })
     const page = await browser.newPage()
