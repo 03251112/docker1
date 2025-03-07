@@ -1,33 +1,17 @@
-FROM node:18-slim
+# 使用 Puppeteer 官方镜像作为基础镜像
+FROM ghcr.io/puppeteer/puppeteer:latest
 
-
-# 安装 Chrome 依赖
-# RUN apt-get update \
-#     && apt-get install -y wget gnupg \
-#     && wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
-#     && sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/sources.list.d/google.list' \
-#     && apt-get update \
-#     && apt-get install -y google-chrome-stable fonts-ipafont-gothic fonts-wqy-zenhei fonts-thai-tlwg fonts-kacst fonts-freefont-ttf libxss1 \
-#     --no-install-recommends \
-#     && rm -rf /var/lib/apt/lists/*
-
-# 安装 Chrome 依赖
-RUN apt-get update \
-    && apt-get install -y wget gnupg \
-    && wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | gpg --dearmor -o /usr/share/keyrings/google-chrome.gpg \
-    && echo "deb [arch=amd64 signed-by=/usr/share/keyrings/google-chrome.gpg] http://dl.google.com/linux/chrome/deb/ stable main" | tee /etc/apt/sources.list.d/google-chrome.list \
-    && apt-get update \
-    && apt-get install -y google-chrome-stable fonts-ipafont-gothic fonts-wqy-zenhei fonts-thai-tlwg fonts-kacst fonts-freefont-ttf libxss1 \
-    --no-install-recommends \
-    && rm -rf /var/lib/apt/lists/*
-
+# 设置工作目录
 WORKDIR /app
 
-COPY package*.json ./
-RUN npm install
-
+# 复制项目文件
 COPY . .
 
+# 安装依赖
+RUN npm install --production
+
+# 暴露端口（Cloud Run 会自动分配端口）
 EXPOSE 8080
 
-CMD [ "node", "index.js" ]
+# 启动命令
+CMD ["node", "index.js"]

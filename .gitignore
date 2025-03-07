@@ -2,10 +2,13 @@
 node_modules
 /dist
 /node_modules
-screenshots
+/screenshots
+*.png
+*.jpg
 # OS generated files
 .DS_Store
 public/generated.json
+/package-lock.json
 
 # local env files
 .env.local
