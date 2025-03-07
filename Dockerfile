@@ -1,33 +1,28 @@
-FROM node:18-slim
+# 使用官方 Node.js 基础镜像
+FROM node:16-slim
 
+# 安装必要的系统依赖
+RUN apt-get update && \
+    apt-get install -y wget gnupg ca-certificates libnss3 libatk-bridge2.0-0 libgtk-3-0 libxss1 libasound2 --no-install-recommends && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
-# 安装 Chrome 依赖
-# RUN apt-get update \
-#     && apt-get install -y wget gnupg \
-#     && wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
-#     && sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/sources.list.d/google.list' \
-#     && apt-get update \
-#     && apt-get install -y google-chrome-stable fonts-ipafont-gothic fonts-wqy-zenhei fonts-thai-tlwg fonts-kacst fonts-freefont-ttf libxss1 \
-#     --no-install-recommends \
-#     && rm -rf /var/lib/apt/lists/*
+# 下载并安装 Chromium
+RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && \
+    dpkg -i google-chrome-stable_current_amd64.deb || apt-get install -yf && \
+    rm google-chrome-stable_current_amd64.deb
 
-# 安装 Chrome 依赖
-RUN apt-get update \
-    && apt-get install -y wget gnupg \
-    && wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | gpg --dearmor -o /usr/share/keyrings/google-chrome.gpg \
-    && echo "deb [arch=amd64 signed-by=/usr/share/keyrings/google-chrome.gpg] http://dl.google.com/linux/chrome/deb/ stable main" | tee /etc/apt/sources.list.d/google-chrome.list \
-    && apt-get update \
-    && apt-get install -y google-chrome-stable fonts-ipafont-gothic fonts-wqy-zenhei fonts-thai-tlwg fonts-kacst fonts-freefont-ttf libxss1 \
-    --no-install-recommends \
-    && rm -rf /var/lib/apt/lists/*
-
+# 设置工作目录
 WORKDIR /app
 
-COPY package*.json ./
-RUN npm install
-
+# 复制项目文件
 COPY . .
 
+# 安装依赖
+RUN npm install --production
+
+# 暴露端口
 EXPOSE 8080
 
-CMD [ "node", "index.js" ]
+# 启动应用
+CMD ["npm", "start"]

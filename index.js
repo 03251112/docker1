@@ -5,6 +5,7 @@ import fs from 'fs/promises';
 import path from 'path';
 const app = express();
 const storage = new Storage();
+
 const bucketName = 'test_lucky'; // 替换为你的 Google Cloud Storage bucket 名称
 app.use('/screenshots', express.static(path.join(process.cwd(), 'screenshots')));
 
@@ -22,6 +23,7 @@ app.post('/p', (req, res) => {
 app.post('/screenshot', async (req, res) => {
   try {
     const browser = await puppeteer.launch({
+      executablePath: "/usr/bin/chromium-browser", // 指定 Chromium 路径
       args: ['--no-sandbox', '--disable-setuid-sandbox'],
       ignoreHTTPSErrors: true  // 忽略 HTTPS 错误
 
@@ -34,7 +36,7 @@ app.post('/screenshot', async (req, res) => {
       height: 1080,
       deviceScaleFactor: 1,
     });
-    await page.goto('http://baidu.com'); // 替换为你想截图的URL
+    await page.goto("https://example.com"); // 访问目标页面
     
 
     const screenshot = await page.screenshot();
