@@ -20,8 +20,10 @@ app.post('/p', (req, res) => {
   res.send(`p ${name}!`);
 });
 
-app.post('/screenshot', async (req, res) => {
+app.get('/screenshot', async (req, res) => {
   try {
+    const targetUrl = req.query.url || "https://example.com";
+      console.log(req.query)
     const browser = await puppeteer.launch({
       args: ['--no-sandbox', '--disable-setuid-sandbox'],
       ignoreHTTPSErrors: true  // 忽略 HTTPS 错误
@@ -33,9 +35,9 @@ app.post('/screenshot', async (req, res) => {
     await page.setViewport({
       width: 1920,
       height: 1080,
-      deviceScaleFactor: 1,
+      deviceScaleFactor: 3,
     });
-    await page.goto("https://example.com"); // 访问目标页面
+    await page.goto(targetUrl); // 访问目标页面
     
 
     const screenshot = await page.screenshot();
