@@ -15,5 +15,7 @@ RUN npm install
 COPY . .
 
 EXPOSE 8080
+# 切换回默认用户
+USER pptruser
 
 CMD [ "node", "index.js" ]
