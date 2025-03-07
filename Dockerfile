@@ -3,10 +3,9 @@ FROM ghcr.io/puppeteer/puppeteer:24.4.0
 # 设置工作目录
 WORKDIR /app
 
-
 # 安装依赖
 COPY package*.json ./
-RUN npm install --production
+RUN npm install
 
 
 COPY . .
