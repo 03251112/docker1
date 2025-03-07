@@ -48,14 +48,13 @@ app.get("/screenshot", async (req, res) => {
     await page.setViewport({
       width: 1920,
       height: 1080,
-      deviceScaleFactor: 4,
+      deviceScaleFactor: 2,
     })
     await page.goto(targetUrl) // 访问目标页面
 
     const screenshot = await page.screenshot()
     // 截取全屏截图
     await page.screenshot({
-      path: "fullpage_screenshot.png", // 保存截图的文件路径
       fullPage: true, // 捕获整个页面
     })
 
