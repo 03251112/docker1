@@ -60,8 +60,9 @@ app.get("/screenshot", async (req, res) => {
     await page.goto(targetUrl) // 访问目标页面
 
     // 截取全屏截图
-    await page.screenshot({
+    const screenshot = await page.screenshot({
       type: "jpeg",
+      quality: 100,
       fullPage: true,
     })
 
